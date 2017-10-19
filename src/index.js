@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import "basscss/css/basscss.css";
+import "flexboxgrid";
+import './index.scss';
+
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import todoStore from './todoStore'
 import TodoList from './TodoList'
-
-
-import 'basscss'
 
 
 ReactDOM.render(
