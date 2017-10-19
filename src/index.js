@@ -4,16 +4,26 @@ import "basscss/css/basscss.css";
 import "flexboxgrid";
 import './index.scss';
 
-import App from './App';
+import App from './test/App';
+import DevTools from 'mobx-react-devtools'
 import registerServiceWorker from './registerServiceWorker';
-import todoStore from './todoStore'
-import TodoList from './TodoList'
+import todoStore from './test/todoStore'
+import TodoList from './test/TodoList'
+import memoryGameStore from './memoryGameStore'
+import MemoryGame from "./MemoryGame";
+
 
 
 ReactDOM.render(
-  <TodoList store={ todoStore } />,
-  document.getElementById('root')
+  <div className="app">
+    {/* <TodoList store={todoStore} /> */}
+    {/* <App/> */}
+    <MemoryGame store={memoryGameStore}/>
+    <DevTools />
+  </div>,
+  document.getElementById("root")
 );
 
 // ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
+
