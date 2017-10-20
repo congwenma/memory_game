@@ -11,16 +11,20 @@ import todoStore from './test/todoStore'
 import TodoList from './test/TodoList'
 import memoryGameStore from './memoryGameStore'
 import MemoryGame from "./MemoryGame";
+import theme from './theme'
 
-
+// material ui
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
 ReactDOM.render(
-  <div className="app">
-    {/* <TodoList store={todoStore} /> */}
-    {/* <App/> */}
-    <MemoryGame store={memoryGameStore}/>
-    <DevTools />
-  </div>,
+  <MuiThemeProvider muiTheme={theme}>
+    <div className="app">
+      {/* <TodoList store={todoStore} /> */}
+      {/* <App/> */}
+      <MemoryGame store={memoryGameStore} />
+      <DevTools />
+    </div>
+  </MuiThemeProvider>,
   document.getElementById("root")
 );
 
