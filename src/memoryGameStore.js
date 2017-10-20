@@ -40,6 +40,9 @@ export class ObservableMemoryGame {
   constructor() {
     this.cards = shuffle(Card.generateSet())
   }
+  shuffle = () => {
+    this.cards = shuffle(this.cards);
+  }
 }
 
 export default new ObservableMemoryGame
