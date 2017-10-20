@@ -3,6 +3,11 @@ import React from "react";
 import Card, { CardContent, CardMedia } from "material-ui/Card";
 // import Fade from "./animation/Fade";
 import Fade from 'material-ui/transitions/Fade'
+import AppBar from "material-ui/AppBar";
+import Toolbar from "material-ui/Toolbar";
+import Typography from "material-ui/Typography";
+import Button from "material-ui/Button";
+
 import SCSS from './MemoryGame.module.scss'
 import Flip from './animation/Flip'
 
@@ -17,8 +22,31 @@ class MemoryGame extends React.Component {
     return (
       <Fade in transitionDuration={{ enter: 1000 }}>
         <div>
-          <h1>Memory Game</h1>
-          <button onClick={store.shuffle}>Shuffle</button>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography type="title" color="inherit" >
+                <span className="mr2">
+                  The Memory Game
+                </span>
+              </Typography>
+              <Button
+                color="accent"
+                raised dense
+                onClick={store.shuffle}
+              >
+                Shuffle
+              </Button>
+
+              <Button
+                color="inherit"
+                raised dense
+                onClick={store.shuffle}
+              >
+                Reset
+              </Button>
+            </Toolbar>
+          </AppBar>
+
           {/* NOTE: magical! */}
           {store.report}
           <div className="cards row">
