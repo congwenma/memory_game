@@ -13,6 +13,7 @@
     "react-dom": "^16.0.0"
   },
   "scripts": {
+    "regenerate": "./src/cardimgs/getcards",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
