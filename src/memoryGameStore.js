@@ -19,11 +19,13 @@ export const shuffle = (arr, { lo, hi, mutable = false } = {}) => {
   return arr;
 };
 
+const IMGS = expand(12).map(n => require(`./cardimgs/img${n}.jpg`))
 
 export class Card {
   @observable state = 'blocked'
   constructor(name) {
     this.name = name
+    this.img = IMGS[+name % 12]
   }
   static generateSet() {
     return expand(12).reduce(

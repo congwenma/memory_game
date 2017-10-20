@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
-import Card, { CardContent } from "material-ui/Card";
+import Card, { CardContent, CardMedia } from "material-ui/Card";
 // import Fade from "./animation/Fade";
 import Fade from 'material-ui/transitions/Fade'
 import SCSS from './MemoryGame.module.scss'
@@ -24,14 +24,20 @@ class MemoryGame extends React.Component {
           {/* NOTE: magical! */}
           {store.report}
           <div className="cards row">
-            {cards.map((card, ind) => {
-              return <div key={ind} className="card-wrapper inline-block col-xs-4 col-xs-3 col-sm-2 col-lg-2 py2">
+            {cards.map((card, index) => {
+              return <div key={index} className="card-wrapper inline-block col-xs-4 col-xs-3 col-sm-2 col-lg-2 py2">
                   <div className="px2">
-                    <Card raised className={`${SCSS.Card}`}>
-                      <CardContent>{card.name}</CardContent>
+                    <Card raised className={`${SCSS.Card} Card-${index}`}>
+                      { false &&
+                        <CardContent>{card.name && ''}</CardContent>
+                      }
+                      <CardMedia
+                        image={card.img}
+                        className={SCSS.CardMedia}
+                      />
                     </Card>
                   </div>
-                </div>;
+                </div>
             })}
           </div>
         </div>
