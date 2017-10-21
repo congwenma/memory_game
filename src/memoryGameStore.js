@@ -3,23 +3,14 @@ import mobx, { observable, computed } from 'mobx'
 const expand = n => Object.keys([...Array(n)])
 const remove = (arr, item) => arr.filter(arrItem => arrItem !== item) // TODO: or splice
 
-export const shuffle = (arr, { lo, hi, mutable = false } = {}) => {
-  if (!mutable) arr = arr.slice(lo, hi);
-
-  var len = arr.length;
-  var temp;
-  lo = lo || 0;
-  hi = hi || arr.length;
-  if (len <= 1) return arr;
-  for (var i = lo; i < hi; i++) {
-    var randomIndex = Math.floor(Math.random() * (i + 1));
-    temp = arr[randomIndex];
-    arr[randomIndex] = arr[i];
-    arr[i] = temp;
+export const shuffle = (a) => {
+  a = [...a]
+  for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
   }
-
-  return arr;
-};
+  return a
+}
 
 const IMGS = expand(12).map(n => require(`./cardimgs/img${n}.jpg`))
 
