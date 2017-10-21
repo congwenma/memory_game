@@ -26,6 +26,7 @@ const IMGS = expand(12).map(n => require(`./cardimgs/img${n}.jpg`))
 const BACK = 'BACK'
 const FRONT = 'FRONT'
 const DONE = 'DONE'
+const INVALID = 'INVALID'
 export class Card {
   @observable state = BACK
   constructor(name) {
@@ -40,9 +41,17 @@ export class Card {
   }
   flip = () => { this.state = FRONT }
   flipDown = () => { this.state = BACK }
+  markInvalid = () => { this.state = INVALID }
   @computed get isFaceup() {
-    const { state } = this
-    return state === FRONT || state === DONE
+    return [FRONT, DONE, INVALID].includes(this.state)
+  }
+
+  @computed get isDone() {
+    return this.state === DONE
+  }
+
+  @computed get isInvalid() {
+    return this.state === INVALID
   }
 
   get isFacedown() {
@@ -64,6 +73,12 @@ export class ObservableMemoryGame {
       card => card.state === DONE
     )
   }
+
+  @computed get invalidCards() {
+    return this.cards.filter(
+      card => card.state === INVALID
+    )
+  }
   constructor() {
     this.cards = shuffle(Card.generateSet())
   }
@@ -71,18 +86,19 @@ export class ObservableMemoryGame {
   reset = () => { this.cards = shuffle(Card.generateSet()) }
 
   flipCard = card => {
-    const { doneCards, flippedCards } = this
+    const { doneCards, flippedCards, invalidCards } = this
     if (card.state === DONE) return;
     if (flippedCards.length >= 2) return;
+    if (invalidCards.length >= 2) return;
 
     if (card.isFacedown) {
       card.flip()
       if (this.flippedCards.length === 2) {
         this.checkPair(...this.flippedCards);
+        const errorCards = this.flippedCards
+        errorCards.map(card => card.markInvalid())
         setTimeout(() => {
-          this.flippedCards.map(
-            card => card.flipDown()
-          )
+          errorCards.map(card => card.flipDown())
         }, 2000);
       }
     }

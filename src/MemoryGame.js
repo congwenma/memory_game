@@ -55,13 +55,32 @@ class MemoryGame extends React.Component {
                 >
                   <div className="px2">
                     <Flip
-                      onClick={() => {
-                        store.flipCard(card)
-                      }}
+                      onClick={() => store.flipCard(card)}
                       isFaceup={!card.isFaceup}
                       className="inline-block"
                       front={
-                        <Card raised className={`${SCSS.Card} Card-${index}`}>
+                        <Card raised
+                          className={`
+                            ${SCSS.Card} Card-${index}
+                            ${card.isDone ? SCSS['Card--done'] : ''}
+                            ${card.isInvalid ? SCSS['Card--invalid'] : ''}
+                            relative
+                          `}
+                        >
+                          { card.isDone && <div
+                            style={{
+                              background: 'rgba(255, 255, 255, 0.5)',
+                              position: 'absolute',
+                              height: '100%',
+                              width: '100%',
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 0
+                            }}
+                          >
+
+                          </div>}
                           <CardMedia
                             image={card.img}
                             className={SCSS.CardMedia}
@@ -69,7 +88,12 @@ class MemoryGame extends React.Component {
                         </Card>
                       }
                       back={
-                        <Card raised className={`${SCSS.Card} Card-${index}`}>
+                        <Card raised
+                          className={`${SCSS.Card} Card-${index}`}>
+                          {/* cheating */}
+                          <span>
+                            {card.name}
+                          </span>
                           <CardMedia
                             image={EMPTY_IMG}
                             className={SCSS.CardMedia}
