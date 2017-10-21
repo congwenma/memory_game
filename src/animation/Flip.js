@@ -3,25 +3,18 @@ import React from 'react'
 
 // taken from https://codepen.io/darkwing/pen/bCali?q=flip+animation&limit=all&type=type-pens
 export default class Flip extends React.Component {
-  constructor() {
-    super()
-    this.state = { flipped: true && 0 } //flipped means face up
-  }
-
-  handleToggle = () => this.setState({ flipped: !this.state.flipped })
-
   render() {
-    const { front, back, className } = this.props;
-    const { flipped } = this.state;
+    const { front, back, className, onClick, isFaceup } = this.props;
+
     return <div
-      className={`flip-container ${flipped && 'toggling'} ${className}`}
+      className={`flip-container ${isFaceup && 'toggling'} ${className}`}
       ontouchstart="this.classList.toggle('hover');"
     >
       <div className={`flipper`}>
-        <div className="front" onClick={this.handleToggle}>
+        <div className="front" onClick={onClick}>
           {front}
         </div>
-        <div className="back" onClick={this.handleToggle}>
+        <div className="back" onClick={onClick}>
           {back}
         </div>
       </div>

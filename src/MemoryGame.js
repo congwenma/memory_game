@@ -29,18 +29,14 @@ class MemoryGame extends React.Component {
                   The Memory Game
                 </span>
               </Typography>
-              <Button
-                color="accent"
-                raised dense
+              <Button color="accent" raised dense
                 onClick={store.shuffle}
               >
                 Shuffle
               </Button>
 
-              <Button
-                color="inherit"
-                raised dense
-                onClick={store.shuffle}
+              <Button color="inherit" raised dense
+                onClick={store.reset}
               >
                 Reset
               </Button>
@@ -59,12 +55,13 @@ class MemoryGame extends React.Component {
                 >
                   <div className="px2">
                     <Flip
+                      onClick={() => {
+                        store.flipCard(card)
+                      }}
+                      isFaceup={!card.isFaceup}
                       className="inline-block"
                       front={
                         <Card raised className={`${SCSS.Card} Card-${index}`}>
-                          {false && (
-                            <CardContent>{card.name && ""}</CardContent>
-                          )}
                           <CardMedia
                             image={card.img}
                             className={SCSS.CardMedia}
