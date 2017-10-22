@@ -1,7 +1,9 @@
 import memoryGameStore, {
   MemoryGameStore,
   Card,
-  shuffle
+  shuffle,
+  FLIPDOWN_DURATION,
+  DONE, INVALID, BACK, FRONT
 } from './memoryGameStore'
 
 const expand = n => Object.keys([...Array(n)])
@@ -13,10 +15,37 @@ const EXPECTED_SET = expand(12).reduce(
   []
 )
 
-
-describe('memoryTestStore', function() {
+jest.useFakeTimers()
+describe('memoryTestStore', () => {
   it('should contain 24 random cards', () => {
     // console.log(memoryGameStore.cards.map(c => c.name))
+  })
+
+  describe('game progression', () => {
+    const game = memoryGameStore
+    const cardsWith = n => memoryGameStore.cards.filter(card => card.name === n)
+    it('e2e works', () => {
+      const elevens = cardsWith('11')
+      elevens.map(game.flipCard)
+      expect(elevens.map(card => card.state)).toContain(DONE, DONE)
+
+      const oneAndTwo = [cardsWith('1')[0], cardsWith('2')[0]]
+      oneAndTwo.map(game.flipCard)
+      expect(oneAndTwo.map(card => card.state)).toContain(INVALID, INVALID)
+      jest.runTimersToTime(FLIPDOWN_DURATION);
+      expect(oneAndTwo.map(card => card.state)).toContain(BACK, BACK)
+
+      // mark single
+      const one = oneAndTwo[0]
+      game.flipCard(one)
+      expect(one.state).toBe(FRONT)
+      jest.runTimersToTime(FLIPDOWN_DURATION);
+      expect(one.state).toBe(BACK)
+
+      // game over
+      expand(11).map(n => cardsWith(n).forEach(game.flipCard))
+      expect(game.isGameOver).toBe(true)
+    })
   })
 })
 
