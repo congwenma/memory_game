@@ -17,13 +17,45 @@ const EXPECTED_SET = expand(12).reduce(
 
 jest.useFakeTimers()
 describe('memoryTestStore', () => {
-  it('should contain 24 random cards', () => {
-    // console.log(memoryGameStore.cards.map(c => c.name))
+  describe('#flipCard', () => {
+    let checkPairSpy, checkProgressSpy
+    beforeEach(() => {
+      memoryGameStore.reset()
+      checkProgressSpy = jest.spyOn(memoryGameStore, 'checkProgress')
+    })
+    afterEach(() => {
+      checkProgressSpy.mockClear()
+    })
+
+    describe('does not progress', () => {
+      it('if selected card is DONE', () => {
+        const card = memoryGameStore.cards[0]
+        card.state = DONE
+        memoryGameStore.flipCard(card)
+        expect(checkProgressSpy).not.toHaveBeenCalled()
+        expect(card.state).toBe(DONE)
+      })
+
+      it('if 2 cards are FRONT', () => {
+        memoryGameStore.cards.slice(0, 2).forEach(card => card.markFront())
+        memoryGameStore.flipCard(memoryGameStore.cards[2])
+        expect(checkProgressSpy).not.toHaveBeenCalled()
+        expect(memoryGameStore.cards[2].state).toBe(BACK)
+      })
+
+      it('if 2 cards are INVALID', () => {
+        memoryGameStore.cards.slice(0, 2).forEach(card => card.markInvalid())
+        memoryGameStore.flipCard(memoryGameStore.cards[2])
+        expect(checkProgressSpy).not.toHaveBeenCalled()
+        expect(memoryGameStore.cards[2].state).toBe(BACK)
+      })
+    })
   })
 
   describe('game progression', () => {
     const game = memoryGameStore
     const cardsWith = n => memoryGameStore.cards.filter(card => card.name === n)
+    beforeEach(game.reset)
     it('e2e works', () => {
       const elevens = cardsWith('11')
       elevens.map(game.flipCard)

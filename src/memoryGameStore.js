@@ -20,6 +20,7 @@ export const BACK = 'BACK'
 export const FRONT = 'FRONT'
 export const DONE = 'DONE'
 export const INVALID = 'INVALID'
+
 export class Card {
   constructor(name) {
     this.name = name
@@ -32,8 +33,8 @@ export class Card {
   @computed get isDone() { return this.state === DONE }
   @computed get isInvalid() { return this.state === INVALID }
 
-  flip = () => { this.state = FRONT }
-  flipDown = () => { this.state = BACK }
+  markFront = () => { this.state = FRONT }
+  markBack = () => { this.state = BACK }
   markInvalid = () => { this.state = INVALID }
   markDone = () => { this.state = DONE }
 
@@ -43,8 +44,6 @@ export class Card {
       []
     )
   }
-
-  get isFacedown() { return this.state === BACK }
 }
 
 export class ObservableMemoryGame {
@@ -74,22 +73,26 @@ export class ObservableMemoryGame {
     const { doneCards, flippedCards, invalidCards } = this
     if (card.state === DONE || flippedCards.length >= 2 || invalidCards.length >= 2) return;
 
-    if (card.isFacedown) {
-      card.flip()
-      if (this.flippedCards.length === 2) {
-        this.checkPair(this.flippedCards);
-      } else {
-        const singleCard = this.flippedCards[0]
-        this.singleCardFlipTimeout = setTimeout(
-          () => {
-            // if the state hasn't changed, might otherwise flip any @flppedCards at this point
-            if (this.flippedCards.includes(singleCard)) {
-              this.flippedCards.map(card => card.flipDown())
-            }
-          },
-          FLIPDOWN_DURATION
-        )
-      }
+    if (card.state === BACK) {
+      card.markFront()
+      this.checkProgress()
+    }
+  }
+
+  checkProgress() {
+    if (this.flippedCards.length === 2) {
+      this.checkPair(this.flippedCards);
+    } else {
+      const singleCard = this.flippedCards[0]
+      this.singleCardFlipTimeout = setTimeout(
+        () => {
+          // if the state hasn't changed, might otherwise markFront any @flppedCards at this point
+          if (this.flippedCards.includes(singleCard)) {
+            this.flippedCards.map(card => card.markBack())
+          }
+        },
+        FLIPDOWN_DURATION
+      )
     }
   }
 
@@ -99,7 +102,7 @@ export class ObservableMemoryGame {
     } else {
       pair.map(card => card.markInvalid());
       setTimeout(() => {
-        this.invalidCards.map(card => card.flipDown());
+        this.invalidCards.map(card => card.markBack());
       }, FLIPDOWN_DURATION);
     }
   }
