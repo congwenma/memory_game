@@ -7,6 +7,8 @@ import AppBar from "material-ui/AppBar";
 import Toolbar from "material-ui/Toolbar";
 import Typography from "material-ui/Typography";
 import Button from "material-ui/Button";
+import Snackbar from 'material-ui/Snackbar';
+import Slide from "material-ui/transitions/Slide";
 
 import SCSS from './MemoryGame.module.scss'
 import Flip from './animation/Flip'
@@ -106,6 +108,16 @@ class MemoryGame extends React.Component {
               );
             })}
           </div>
+
+          <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={store.isGameOver}
+            transition={<Slide direction={'up'} />}
+            SnackbarContentProps={{
+              'aria-describedby': 'message-id',
+            }}
+            message={<span>You've won.</span>}
+          />
         </div>
       </Fade>
     );

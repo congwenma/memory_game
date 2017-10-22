@@ -33,6 +33,8 @@ export class Card {
   flip = () => { this.state = FRONT }
   flipDown = () => { this.state = BACK }
   markInvalid = () => { this.state = INVALID }
+  markDone = () => { this.state = DONE }
+
   @computed get isFaceup() {
     return [FRONT, DONE, INVALID].includes(this.state)
   }
@@ -51,7 +53,6 @@ export class Card {
 }
 
 export class ObservableMemoryGame {
-  @observable isGameOver = false
   @observable cards = []
 
   @computed get flippedCards() {
@@ -70,6 +71,10 @@ export class ObservableMemoryGame {
       card => card.state === INVALID
     )
   }
+  @computed get isGameOver() {
+    return this.doneCards.length === 24
+  }
+
   constructor() {
     this.cards = shuffle(Card.generateSet())
   }
@@ -91,20 +96,18 @@ export class ObservableMemoryGame {
         setTimeout(() => {
           errorCards.map(card => card.flipDown())
         }, 2000);
+      } else {
+        setTimeout(() =>
+          this.flippedCards.map(card => card.flipDown()), 3000
+        )
       }
     }
   }
 
   checkPair = (cardA, cardB) => {
     if (cardA.name === cardB.name) {
-      cardA.state = cardB.state = DONE
-      this.checkGameOver()
-    }
-  }
-
-  checkGameOver = () => {
-    if (this.doneCards.length === 24) {
-      this.isGameOver = true
+      cardA.markDone()
+      cardB.markDone()
     }
   }
 }
