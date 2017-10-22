@@ -13,8 +13,6 @@ import Slide from "material-ui/transitions/Slide";
 import SCSS from './MemoryGame.module.scss'
 import Flip from './animation/Flip'
 
-const EMPTY_IMG = 'https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=0ahUKEwjJ1fDT8v_WAhUY84MKHecdAdgQjBwIBA&url=http%3A%2F%2Findustrialdistrictla.com%2Fwp-content%2Fuploads%2F2013%2F08%2Fblank-120x120-200x150.jpg&psig=AOvVaw2erRi7KIgAY_Ht4Y3n3KAU&ust=1508612767045424'
-
 const AppMenu = ({ store }) =>
   <AppBar position="static">
     <Toolbar>
@@ -65,9 +63,9 @@ class GameCard extends React.Component {
           }
           back={
             <Card raised
-              className={`${SCSS.Card} Card-${index}`}>
+              className={`${SCSS.Card} Card-${index} relative`}>
               {/* <span> {card.name} </span> */}
-              <CardMedia image={EMPTY_IMG} className={SCSS.CardMedia} />
+              <CardContent className={SCSS.CardMediaPlaceholder} />
             </Card>
           }
         />

@@ -70,7 +70,6 @@ export class ObservableMemoryGame {
   reset = () => { this.cards = shuffle(Card.generateSet()) }
 
   flipCard = card => {
-    debugger;
     const { doneCards, flippedCards, invalidCards } = this
     if (card.state === DONE || flippedCards.length >= 2 || invalidCards.length >= 2) return;
 

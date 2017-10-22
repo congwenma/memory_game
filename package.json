@@ -5,6 +5,7 @@
   "dependencies": {
     "basscss": "^8.0.3",
     "custom-react-scripts": "0.2.1",
+    "express": "^4.16.2",
     "flexboxgrid": "^6.3.1",
     "material-ui": "^1.0.0-beta.17",
     "mobx": "^3.3.1",
